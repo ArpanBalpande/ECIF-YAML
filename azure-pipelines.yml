@@ -76,6 +76,6 @@ steps:
 
 
   # VARIABLES
-  variables: {
-    Parameters.solution : 'SimpleCalculator.sln'
-  }
+  variables:
+  - name: 'Parameters.solution'
+    value: 'SimpleCalculator.sln'
