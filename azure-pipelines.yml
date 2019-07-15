@@ -95,6 +95,16 @@ steps:
     csmFileLink: 'https://raw.githubusercontent.com/ArpanBalpande/Simple-Calculator/master/ARMTemplates/storage-account-create.json'
     csmParametersFileLink: 'https://raw.githubusercontent.com/ArpanBalpande/Simple-Calculator/master/ARMTemplates/storage-account-create.parameters.json'
 
+- task: PackerBuild@1
+  displayName: 'Build immutable image'
+  inputs:
+    ConnectedServiceName: 'ArpanRM-SC'
+    managedImageName: SimCalImage
+    location: eastus
+    storageAccountName: simcalsa
+    azureResourceGroup: ECIF
+    packagePath: '$(System.DefaultWorkingDirectory)/_Simple-Calculator-Project-.NET Desktop-CI/drop'
+    deployScriptPath: InstallCal.ps1
 
 # VARIABLES
 variables:
