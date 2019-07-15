@@ -75,7 +75,7 @@ steps:
   condition: succeededOrFailed()
 
 
-  # VARIABLES
-  variables:
-  - name: 'Parameters.solution'
-    value: 'SimpleCalculator.sln'
+# VARIABLES
+variables:
+- name: 'Parameters.solution'
+  value: 'SimpleCalculator.sln'
