@@ -103,7 +103,7 @@ steps:
     location: eastus
     storageAccountName: simcalsa
     azureResourceGroup: ECIF
-    packagePath: '$(build.artifactstagingdirectory)/_1. Build Application - YAML/drop'
+    packagePath: '$(System.DefaultWorkingDirectory)/WindowsApp1/bin/Release/WindowsApp1.exe'
     deployScriptPath: InstallCal.ps1
 
 # VARIABLES
