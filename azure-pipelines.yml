@@ -85,6 +85,17 @@ steps:
     csmFileLink: 'https://raw.githubusercontent.com/ArpanBalpande/Simple-Calculator/master/ARMTemplates/vnet-one-subnet.json'
     csmParametersFileLink: 'https://raw.githubusercontent.com/ArpanBalpande/Simple-Calculator/master/ARMTemplates/vnet-one-subnet.parameters.json'
 
+- task: AzureResourceGroupDeployment@2
+  displayName: 'Azure Deployment: Create Storage Account'
+  inputs:
+    azureSubscription: 'ArpanRM-SC'
+    resourceGroupName: ECIF
+    location: 'East US'
+    templateLocation: 'URL of the file'
+    csmFileLink: 'https://raw.githubusercontent.com/ArpanBalpande/Simple-Calculator/master/ARMTemplates/storage-account-create.json'
+    csmParametersFileLink: 'https://raw.githubusercontent.com/ArpanBalpande/Simple-Calculator/master/ARMTemplates/storage-account-create.parameters.json'
+
+
 # VARIABLES
 variables:
 - name: Parameters.solution
