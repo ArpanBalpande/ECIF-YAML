@@ -1,1 +1,1 @@
-Creation of Azure Pipeline using single YAML file.
+Creation of Azure Pipeline using a single YAML file.
