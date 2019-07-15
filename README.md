@@ -1,1 +1,1 @@
-Creation of the whole Azure Pipeline using a single YAML file.
+This Repo consists of the Application Source Code, ARM Templates and azure-pipeline.yml file for creation of the whole DevOps Pipeline in a single click.
