@@ -22,9 +22,9 @@ pool:
 #Your build pipeline references the ‘BuildConfiguration’ variable, which you’ve selected to be settable at queue time. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab, and then select the option to make it settable at queue time. See https://go.microsoft.com/fwlink/?linkid=865971
 #Your build pipeline references the ‘BuildConfiguration’ variable, which you’ve selected to be settable at queue time. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab, and then select the option to make it settable at queue time. See https://go.microsoft.com/fwlink/?linkid=865971
 
-# STEPS
-
 steps:
+
+# BUILD TASKS
 - task: NuGetToolInstaller@0
   displayName: 'Use NuGet 4.4.1'
   inputs:
@@ -74,6 +74,17 @@ steps:
     PathtoPublish: '$(build.artifactstagingdirectory)'
   condition: succeededOrFailed()
 
+# RELEASE TASKS
+steps:
+- task: AzureResourceGroupDeployment@2
+  displayName: 'Azure Deployment: Create VNET'
+  inputs:
+    azureSubscription: 'Free Trial (3e92397a-621d-49a2-9e9e-377efe86e2b3)'
+    resourceGroupName: ECIF
+    location: 'East US'
+    templateLocation: 'URL of the file'
+    csmFileLink: 'https://raw.githubusercontent.com/ArpanBalpande/Simple-Calculator/master/ARMTemplates/vnet-one-subnet.json'
+    csmParametersFileLink: 'https://raw.githubusercontent.com/ArpanBalpande/Simple-Calculator/master/ARMTemplates/vnet-one-subnet.parameters.json'
 
 # VARIABLES
 variables:
