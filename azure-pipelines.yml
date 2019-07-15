@@ -75,7 +75,6 @@ steps:
   condition: succeededOrFailed()
 
 # RELEASE TASKS
-steps:
 - task: AzureResourceGroupDeployment@2
   displayName: 'Azure Deployment: Create VNET'
   inputs:
