@@ -78,7 +78,7 @@ steps:
 - task: AzureResourceGroupDeployment@2
   displayName: 'Azure Deployment: Create VNET'
   inputs:
-    azureSubscription: 'ArpanBalpande'
+    azureSubscription: 'ArpanRM-SC'
     resourceGroupName: ECIF
     location: 'East US'
     templateLocation: 'URL of the file'
