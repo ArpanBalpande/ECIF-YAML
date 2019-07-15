@@ -79,3 +79,7 @@ steps:
 variables:
 - name: Parameters.solution
   value: '**\*.sln'
+- name: BuildPlatform
+  value: 'any cpu'
+- name: BuildConfiguration
+  value: 'release'
