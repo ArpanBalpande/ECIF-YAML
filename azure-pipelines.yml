@@ -73,9 +73,3 @@ steps:
   inputs:
     PathtoPublish: '$(build.artifactstagingdirectory)'
   condition: succeededOrFailed()
-
-
-# VARIABLES
-variables:
-- name: 'Parameters.solution'
-  value: 'SimpleCalculator.sln'
