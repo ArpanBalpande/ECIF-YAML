@@ -51,7 +51,7 @@ stages:
     inputs:
       testAssemblyVer2: |
       '**\$(BuildConfiguration)\*test*.dll'
-      '!**\obj\**''
+      '!**\obj\**'
       platform: '$(BuildPlatform)'
       configuration: '$(BuildConfiguration)'
 
