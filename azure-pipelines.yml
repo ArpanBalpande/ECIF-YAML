@@ -13,6 +13,16 @@ pool:
   - visualstudio
   - vstest
 
+
+# VARIABLES
+variables:
+- name: Parameters.solution
+  value: '**\*.sln'
+- name: BuildPlatform
+  value: 'any cpu'
+- name: BuildConfiguration
+  value: 'release'
+
 steps:
 # BUILD TASKS
 - task: NuGetToolInstaller@0
@@ -93,7 +103,7 @@ steps:
     location: eastus
     storageAccountName: simcalsa
     azureResourceGroup: ECIF
-    packagePath: '$(System.DefaultWorkingDirectory)'
+    packagePath: '$(build.artifactstagingdirectory)'
     deployScriptPath: InstallCal.ps1
 
 - task: AzureResourceGroupDeployment@2
@@ -105,12 +115,3 @@ steps:
     templateLocation: 'URL of the file'
     csmFileLink: 'https://raw.githubusercontent.com/ArpanBalpande/Simple-Calculator/master/ARMTemplates/custom-image-vmss.json'
     csmParametersFileLink: 'https://raw.githubusercontent.com/ArpanBalpande/Simple-Calculator/master/ARMTemplates/custom-image-vmss.parameters.json'
-
-# VARIABLES
-variables:
-- name: Parameters.solution
-  value: '**\*.sln'
-- name: BuildPlatform
-  value: 'any cpu'
-- name: BuildConfiguration
-  value: 'release'
