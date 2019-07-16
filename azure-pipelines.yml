@@ -23,7 +23,7 @@ variables:
 - name: BuildConfiguration
   value: 'release'
 - name: InfraExist
-  value: 'True'
+  value: 'False'
 
 steps:
 # BUILD TASKS
