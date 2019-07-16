@@ -50,8 +50,8 @@ stages:
     displayName: 'VsTest - testAssemblies'
     inputs:
       testAssemblyVer2: |
-      **\$(BuildConfiguration)\*test*.dll
-      !**\obj\**
+      '**\$(BuildConfiguration)\*test*.dll'
+      '!**\obj\**''
       platform: '$(BuildPlatform)'
       configuration: '$(BuildConfiguration)'
 
