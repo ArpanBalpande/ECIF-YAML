@@ -22,20 +22,25 @@ variables:
   value: 'any cpu'
 - name: BuildConfiguration
   value: 'release'
+- name: InfraExist
+  value: 'True'
 
 steps:
 # BUILD TASKS
 - task: NuGetToolInstaller@0
+  condition: eq(variables['InfraExist'], 'False')
   displayName: 'Use NuGet 4.4.1'
   inputs:
     versionSpec: 4.4.1
 
 - task: NuGetCommand@2
+  condition: eq(variables['InfraExist'], 'False')
   displayName: 'NuGet restore'
   inputs:
     restoreSolution: '$(Parameters.solution)'
 
 - task: VSBuild@1
+  condition: eq(variables['InfraExist'], 'False')
   displayName: 'Build solution **\*.sln'
   inputs:
     solution: '$(Parameters.solution)'
@@ -43,6 +48,7 @@ steps:
     configuration: '$(BuildConfiguration)'
 
 - task: VSTest@2
+  condition: eq(variables['InfraExist'], 'False')
   displayName: 'VsTest - testAssemblies'
   inputs:
     testAssemblyVer2: |
@@ -52,6 +58,7 @@ steps:
     configuration: '$(BuildConfiguration)'
 
 - task: PublishSymbols@2
+  condition: eq(variables['InfraExist'], 'False')
   displayName: 'Publish symbols path'
   inputs:
     SearchPattern: '**\bin\**\*.pdb'
@@ -59,6 +66,7 @@ steps:
   continueOnError: true
 
 - task: CopyFiles@2
+  condition: eq(variables['InfraExist'], 'False')
   displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
   inputs:
     SourceFolder: '$(system.defaultworkingdirectory)'
@@ -69,6 +77,7 @@ steps:
   condition: succeededOrFailed()
 
 - task: PublishBuildArtifacts@1
+  condition: eq(variables['InfraExist'], 'False')
   displayName: 'Publish Artifact: drop'
   inputs:
     PathtoPublish: '$(build.artifactstagingdirectory)'
@@ -76,6 +85,7 @@ steps:
 
 # RELEASE TASKS
 - task: AzureResourceGroupDeployment@2
+  condition: eq(variables['InfraExist'], 'False')
   displayName: 'Azure Deployment: Create VNET'
   inputs:
     azureSubscription: 'ArpanRM-SC'
@@ -86,6 +96,7 @@ steps:
     csmParametersFileLink: 'https://raw.githubusercontent.com/ArpanBalpande/Simple-Calculator/master/ARMTemplates/vnet-one-subnet.parameters.json'
 
 - task: AzureResourceGroupDeployment@2
+  condition: eq(variables['InfraExist'], 'False')
   displayName: 'Azure Deployment: Create Storage Account'
   inputs:
     azureSubscription: 'ArpanRM-SC'
@@ -96,6 +107,7 @@ steps:
     csmParametersFileLink: 'https://raw.githubusercontent.com/ArpanBalpande/Simple-Calculator/master/ARMTemplates/storage-account-create.parameters.json'
 
 - task: PackerBuild@1
+  condition: eq(variables['InfraExist'], 'False')
   displayName: 'Build immutable image'
   inputs:
     ConnectedServiceName: 'ArpanRM-SC'
@@ -107,6 +119,7 @@ steps:
     deployScriptPath: InstallCal.ps1
 
 - task: AzureResourceGroupDeployment@2
+  condition: eq(variables['InfraExist'], 'False')
   displayName: 'Azure Deployment: Create VMSS'
   inputs:
     azureSubscription: 'ArpanRM-SC'
@@ -115,3 +128,15 @@ steps:
     templateLocation: 'URL of the file'
     csmFileLink: 'https://raw.githubusercontent.com/ArpanBalpande/Simple-Calculator/master/ARMTemplates/custom-image-vmss.json'
     csmParametersFileLink: 'https://raw.githubusercontent.com/ArpanBalpande/Simple-Calculator/master/ARMTemplates/custom-image-vmss.parameters.json'
+
+- task: AzureVmssDeployment@0
+  condition: eq(variables['InfraExist'], 'True')
+  displayName: 'Azure VMSS simcalvms: Update App'
+  inputs:
+    azureSubscription: 'ArpanRM-SC'
+    action: 'Configure application startup'
+    vmssName: simcalvms
+    vmssOsType: Windows
+    customScriptsDirectory: '$(build.artifactstagingdirectory)'
+    customScript: ChangeCal.ps1
+    customScriptsStorageAccount: simcalsa
