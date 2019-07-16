@@ -74,14 +74,14 @@ steps:
      **\bin\$(BuildConfiguration)\**\*.exe
      **\*.ps1
     TargetFolder: '$(build.artifactstagingdirectory)'
-  condition: succeededOrFailed()
+  #condition: succeededOrFailed()
 
 - task: PublishBuildArtifacts@1
   condition: eq(variables['InfraExist'], 'False')
   displayName: 'Publish Artifact: drop'
   inputs:
     PathtoPublish: '$(build.artifactstagingdirectory)'
-  condition: succeededOrFailed()
+  #condition: succeededOrFailed()
 
 # RELEASE TASKS
 - task: AzureResourceGroupDeployment@2
