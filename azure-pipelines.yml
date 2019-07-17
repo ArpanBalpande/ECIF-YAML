@@ -21,115 +21,96 @@ variables:
   value: 'any cpu'
 - name: BuildConfiguration
   value: 'release'
-- name: InfraExist
-  value: 'True'
 
-stages:
-- stage: A
-  condition: eq(variables['InfraExist'], 'False')
-  steps:
-  # BUILD TASKS
-  - task: NuGetToolInstaller@0
-    displayName: 'Use NuGet 4.4.1'
-    inputs:
-      versionSpec: 4.4.1
+steps:
+# BUILD APPLICATION ( 7 Tasks )
+- task: NuGetToolInstaller@0
+  displayName: 'Use NuGet 4.4.1'
+  inputs:
+    versionSpec: 4.4.1
 
-  - task: NuGetCommand@2
-    displayName: 'NuGet restore'
-    inputs:
-      restoreSolution: '$(Parameters.solution)'
+- task: NuGetCommand@2
+  displayName: 'NuGet restore'
+  inputs:
+    restoreSolution: '$(Parameters.solution)'
 
-  - task: VSBuild@1
-    displayName: 'Build solution **\*.sln'
-    inputs:
-      solution: '$(Parameters.solution)'
-      platform: '$(BuildPlatform)'
-      configuration: '$(BuildConfiguration)'
+- task: VSBuild@1
+  displayName: 'Build solution **\*.sln'
+  inputs:
+    solution: '$(Parameters.solution)'
+    platform: '$(BuildPlatform)'
+    configuration: '$(BuildConfiguration)'
 
-  - task: VSTest@2
-    displayName: 'VsTest - testAssemblies'
-    inputs:
-      testAssemblyVer2: |
-      '**\$(BuildConfiguration)\*test*.dll'
-      '!**\obj\**'
-      platform: '$(BuildPlatform)'
-      configuration: '$(BuildConfiguration)'
+- task: VSTest@2
+  displayName: 'VsTest - testAssemblies'
+  inputs:
+    testAssemblyVer2: |
+    **\$(BuildConfiguration)\*test*.dll
+    !**\obj\**
+    platform: '$(BuildPlatform)'
+    configuration: '$(BuildConfiguration)'
 
-  - task: PublishSymbols@2
-    displayName: 'Publish symbols path'
-    inputs:
-      SearchPattern: '**\bin\**\*.pdb'
-      PublishSymbols: false
-    continueOnError: true
+- task: PublishSymbols@2
+  displayName: 'Publish symbols path'
+  inputs:
+    SearchPattern: '**\bin\**\*.pdb'
+    PublishSymbols: false
+  continueOnError: true
 
-  - task: CopyFiles@2
-    displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
-    inputs:
-      SourceFolder: '$(system.defaultworkingdirectory)'
-      Contents: |
-      **\bin\$(BuildConfiguration)\**\*.exe
-      **\*.ps1
-      TargetFolder: '$(build.artifactstagingdirectory)'
-    condition: succeededOrFailed()
+- task: CopyFiles@2
+  displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
+  inputs:
+    SourceFolder: '$(system.defaultworkingdirectory)'
+    Contents: |
+    **\bin\$(BuildConfiguration)\**\*.exe
+    **\*.ps1
+    TargetFolder: '$(build.artifactstagingdirectory)'
+  condition: succeededOrFailed()
 
-  - task: PublishBuildArtifacts@1
-    displayName: 'Publish Artifact: drop'
-    inputs:
-      PathtoPublish: '$(build.artifactstagingdirectory)'
-    condition: succeededOrFailed()
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: drop'
+  inputs:
+    PathtoPublish: '$(build.artifactstagingdirectory)'
+  condition: succeededOrFailed()
 
-  # RELEASE TASKS
-  - task: AzureResourceGroupDeployment@2
-    displayName: 'Azure Deployment: Create VNET'
-    inputs:
-      azureSubscription: 'ArpanRM-SC'
-      resourceGroupName: ECIF
-      location: 'East US'
-      templateLocation: 'URL of the file'
-      csmFileLink: 'https://raw.githubusercontent.com/ArpanBalpande/Simple-Calculator/master/ARMTemplates/vnet-one-subnet.json'
-      csmParametersFileLink: 'https://raw.githubusercontent.com/ArpanBalpande/Simple-Calculator/master/ARMTemplates/vnet-one-subnet.parameters.json'
+# CREATION OF CUSTOM IMAGE AND VMSS ( 4 Tasks )
+- task: AzureResourceGroupDeployment@2
+  displayName: 'Azure Deployment: Create VNET'
+  inputs:
+    azureSubscription: 'ArpanRM-SC'
+    resourceGroupName: ECIF
+    location: 'East US'
+    templateLocation: 'URL of the file'
+    csmFileLink: 'https://raw.githubusercontent.com/ArpanBalpande/Simple-Calculator/master/ARMTemplates/vnet-one-subnet.json'
+    csmParametersFileLink: 'https://raw.githubusercontent.com/ArpanBalpande/Simple-Calculator/master/ARMTemplates/vnet-one-subnet.parameters.json'
 
-  - task: AzureResourceGroupDeployment@2
-    displayName: 'Azure Deployment: Create Storage Account'
-    inputs:
-      azureSubscription: 'ArpanRM-SC'
-      resourceGroupName: ECIF
-      location: 'East US'
-      templateLocation: 'URL of the file'
-      csmFileLink: 'https://raw.githubusercontent.com/ArpanBalpande/Simple-Calculator/master/ARMTemplates/storage-account-create.json'
-      csmParametersFileLink: 'https://raw.githubusercontent.com/ArpanBalpande/Simple-Calculator/master/ARMTemplates/storage-account-create.parameters.json'
+- task: AzureResourceGroupDeployment@2
+  displayName: 'Azure Deployment: Create Storage Account'
+  inputs:
+    azureSubscription: 'ArpanRM-SC'
+    resourceGroupName: ECIF
+    location: 'East US'
+    templateLocation: 'URL of the file'
+    csmFileLink: 'https://raw.githubusercontent.com/ArpanBalpande/Simple-Calculator/master/ARMTemplates/storage-account-create.json'
+    csmParametersFileLink: 'https://raw.githubusercontent.com/ArpanBalpande/Simple-Calculator/master/ARMTemplates/storage-account-create.parameters.json'
 
-  - task: PackerBuild@1
-    displayName: 'Build immutable image'
-    inputs:
-      ConnectedServiceName: 'ArpanRM-SC'
-      managedImageName: SimCalImage
-      location: eastus
-      storageAccountName: simcalsa
-      azureResourceGroup: ECIF
-      packagePath: '$(build.artifactstagingdirectory)'
-      deployScriptPath: InstallCal.ps1
+- task: PackerBuild@1
+  displayName: 'Build immutable image'
+  inputs:
+    ConnectedServiceName: 'ArpanRM-SC'
+    managedImageName: SimCalImage
+    location: eastus
+    storageAccountName: simcalsa
+    azureResourceGroup: ECIF
+    packagePath: '$(build.artifactstagingdirectory)'
+    deployScriptPath: InstallCal.ps1
 
-  - task: AzureResourceGroupDeployment@2
-    displayName: 'Azure Deployment: Create VMSS'
-    inputs:
-      azureSubscription: 'ArpanRM-SC'
-      resourceGroupName: ECIF
-      location: 'East US'
-      templateLocation: 'URL of the file'
-      csmFileLink: 'https://raw.githubusercontent.com/ArpanBalpande/Simple-Calculator/master/ARMTemplates/custom-image-vmss.json'
-      csmParametersFileLink: 'https://raw.githubusercontent.com/ArpanBalpande/Simple-Calculator/master/ARMTemplates/custom-image-vmss.parameters.json'
-
-- stage: B
-  condition: eq(variables['InfraExist'], 'True')
-  steps:
-  - task: AzureVmssDeployment@0
-    displayName: 'Azure VMSS simcalvms: Update App'
-    inputs:
-      azureSubscription: 'ArpanRM-SC'
-      action: 'Configure application startup'
-      vmssName: simcalvms
-      vmssOsType: Windows
-      customScriptsDirectory: '$(build.artifactstagingdirectory)'
-      customScript: ChangeCal.ps1
-      customScriptsStorageAccount: simcalsa
+- task: AzureResourceGroupDeployment@2
+  displayName: 'Azure Deployment: Create VMSS'
+  inputs:
+    azureSubscription: 'ArpanRM-SC'
+    resourceGroupName: ECIF
+    location: 'East US'
+    templateLocation: 'URL of the file'
+    csmFileLink: 'https://raw.githubusercontent.com/ArpanBalpande/Simple-Calculator/master/ARMTemplates/custom-image-vmss.json'
+    csmParametersFileLink: 'https://raw.githubusercontent.com/ArpanBalpande/Simple-Calculator/master/ARMTemplates/custom-image-vmss.parameters.json'
