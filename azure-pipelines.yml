@@ -13,6 +13,7 @@ pool:
   - visualstudio
   - vstest
 
+
 # VARIABLES
 variables:
 - name: Parameters.solution
@@ -21,9 +22,9 @@ variables:
   value: 'any cpu'
 - name: BuildConfiguration
   value: 'release'
-  
+
 steps:
-# BUILD APPLICATION ( 7 Tasks )
+# BUILD TASKS
 - task: NuGetToolInstaller@0
   displayName: 'Use NuGet 4.4.1'
   inputs:
@@ -45,8 +46,8 @@ steps:
   displayName: 'VsTest - testAssemblies'
   inputs:
     testAssemblyVer2: |
-    **\$(BuildConfiguration)\*test*.dll
-    !**\obj\**
+     **\$(BuildConfiguration)\*test*.dll
+     !**\obj\**
     platform: '$(BuildPlatform)'
     configuration: '$(BuildConfiguration)'
 
@@ -62,8 +63,8 @@ steps:
   inputs:
     SourceFolder: '$(system.defaultworkingdirectory)'
     Contents: |
-    **\bin\$(BuildConfiguration)\**\*.exe
-    **\*.ps1
+     **\bin\$(BuildConfiguration)\**\*.exe
+     **\*.ps1
     TargetFolder: '$(build.artifactstagingdirectory)'
   condition: succeededOrFailed()
 
@@ -73,7 +74,7 @@ steps:
     PathtoPublish: '$(build.artifactstagingdirectory)'
   condition: succeededOrFailed()
 
-# CREATION OF CUSTOM IMAGE AND VMSS ( 4 Tasks )
+# RELEASE TASKS
 - task: AzureResourceGroupDeployment@2
   displayName: 'Azure Deployment: Create VNET'
   inputs:
