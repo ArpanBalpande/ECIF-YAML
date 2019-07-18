@@ -21,7 +21,7 @@ variables:
   value: 'any cpu'
 - name: BuildConfiguration
   value: 'release'
-
+  
 steps:
 # BUILD APPLICATION ( 7 Tasks )
 - task: NuGetToolInstaller@0
