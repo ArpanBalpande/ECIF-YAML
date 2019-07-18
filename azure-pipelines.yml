@@ -79,7 +79,7 @@ steps:
   displayName: 'Azure Deployment: Create VNET'
   inputs:
     azureSubscription: 'ArpanRM-SC'
-    resourceGroupName: ECIF
+    resourceGroupName: innovationgroup-azuredevops-JD
     location: 'East US'
     templateLocation: 'URL of the file'
     csmFileLink: 'https://raw.githubusercontent.com/ArpanBalpande/Simple-Calculator/master/ARMTemplates/vnet-one-subnet.json'
@@ -89,7 +89,7 @@ steps:
   displayName: 'Azure Deployment: Create Storage Account'
   inputs:
     azureSubscription: 'ArpanRM-SC'
-    resourceGroupName: ECIF
+    resourceGroupName: innovationgroup-azuredevops-JD
     location: 'East US'
     templateLocation: 'URL of the file'
     csmFileLink: 'https://raw.githubusercontent.com/ArpanBalpande/Simple-Calculator/master/ARMTemplates/storage-account-create.json'
@@ -102,7 +102,7 @@ steps:
     managedImageName: SimCalImage
     location: eastus
     storageAccountName: simcalsa
-    azureResourceGroup: ECIF
+    azureResourceGroup: innovationgroup-azuredevops-JD
     packagePath: '$(build.artifactstagingdirectory)'
     deployScriptPath: InstallCal.ps1
 
@@ -110,7 +110,7 @@ steps:
   displayName: 'Azure Deployment: Create VMSS'
   inputs:
     azureSubscription: 'ArpanRM-SC'
-    resourceGroupName: ECIF
+    resourceGroupName: innovationgroup-azuredevops-JD
     location: 'East US'
     templateLocation: 'URL of the file'
     csmFileLink: 'https://raw.githubusercontent.com/ArpanBalpande/Simple-Calculator/master/ARMTemplates/custom-image-vmss.json'

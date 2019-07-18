@@ -18,7 +18,7 @@
         "value": "NeverQuit@22"
       },
       "existingVirtualNetworkResourceGroup": {
-        "value": "ECIF"
+        "value": "innovationgroup-azuredevops-JD"
       },
       "existingVirtualNetworkName": {
         "value": "ECIF-vnet"
@@ -27,7 +27,7 @@
         "value": "default"
       },
       "existingManagedImageResourceGroup": {
-        "value": "ECIF"
+        "value": "innovationgroup-azuredevops-JD"
       },
       "existingManagedImageName": {
         "value": "SimCalImage"
