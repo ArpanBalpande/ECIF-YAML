@@ -78,7 +78,7 @@ steps:
 - task: AzureResourceGroupDeployment@2
   displayName: 'Azure Deployment: Create VNET'
   inputs:
-    azureSubscription: 'ArpanRM-SC'
+    azureSubscription: 'YashRM-SC'
     resourceGroupName: innovationgroup-azuredevops-JD
     location: 'East US'
     templateLocation: 'URL of the file'
@@ -88,7 +88,7 @@ steps:
 - task: AzureResourceGroupDeployment@2
   displayName: 'Azure Deployment: Create Storage Account'
   inputs:
-    azureSubscription: 'ArpanRM-SC'
+    azureSubscription: 'YashRM-SC'
     resourceGroupName: innovationgroup-azuredevops-JD
     location: 'East US'
     templateLocation: 'URL of the file'
@@ -98,7 +98,7 @@ steps:
 - task: PackerBuild@1
   displayName: 'Build immutable image'
   inputs:
-    ConnectedServiceName: 'ArpanRM-SC'
+    ConnectedServiceName: 'YashRM-SC'
     managedImageName: SimCalImage
     location: eastus
     storageAccountName: simcalsa
@@ -109,7 +109,7 @@ steps:
 - task: AzureResourceGroupDeployment@2
   displayName: 'Azure Deployment: Create VMSS'
   inputs:
-    azureSubscription: 'ArpanRM-SC'
+    azureSubscription: 'YashRM-SC'
     resourceGroupName: innovationgroup-azuredevops-JD
     location: 'East US'
     templateLocation: 'URL of the file'
