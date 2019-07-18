@@ -24,7 +24,7 @@
         }
     },
     "variables": {
-        "storageAccountName": "simcalsa"
+        "storageAccountName": "ecifdeeresa"
     },
     "resources": [
         {
