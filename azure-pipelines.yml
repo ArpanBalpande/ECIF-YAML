@@ -82,8 +82,8 @@ steps:
     resourceGroupName: innovationgroup-azuredevops-JD
     location: 'East US'
     templateLocation: 'URL of the file'
-    csmFileLink: 'https://raw.githubusercontent.com/ArpanBalpande/Simple-Calculator/master/ARMTemplates/vnet-one-subnet.json'
-    csmParametersFileLink: 'https://raw.githubusercontent.com/ArpanBalpande/Simple-Calculator/master/ARMTemplates/vnet-one-subnet.parameters.json'
+    csmFileLink: 'https://raw.githubusercontent.com/ArpanBalpande/ECIF-YAML/master/ARMTemplates/vnet-one-subnet.json'
+    csmParametersFileLink: 'https://raw.githubusercontent.com/ArpanBalpande/ECIF-YAML/master/ARMTemplates/vnet-one-subnet.parameters.json'
 
 - task: AzureResourceGroupDeployment@2
   displayName: 'Azure Deployment: Create Storage Account'
@@ -92,8 +92,8 @@ steps:
     resourceGroupName: innovationgroup-azuredevops-JD
     location: 'East US'
     templateLocation: 'URL of the file'
-    csmFileLink: 'https://raw.githubusercontent.com/ArpanBalpande/Simple-Calculator/master/ARMTemplates/storage-account-create.json'
-    csmParametersFileLink: 'https://raw.githubusercontent.com/ArpanBalpande/Simple-Calculator/master/ARMTemplates/storage-account-create.parameters.json'
+    csmFileLink: 'https://raw.githubusercontent.com/ArpanBalpande/ECIF-YAML/master/ARMTemplates/storage-account-create.json'
+    csmParametersFileLink: 'https://raw.githubusercontent.com/ArpanBalpande/ECIF-YAML/master/ARMTemplates/storage-account-create.parameters.json'
 
 - task: PackerBuild@1
   displayName: 'Build immutable image'
@@ -113,5 +113,5 @@ steps:
     resourceGroupName: innovationgroup-azuredevops-JD
     location: 'East US'
     templateLocation: 'URL of the file'
-    csmFileLink: 'https://raw.githubusercontent.com/ArpanBalpande/Simple-Calculator/master/ARMTemplates/custom-image-vmss.json'
-    csmParametersFileLink: 'https://raw.githubusercontent.com/ArpanBalpande/Simple-Calculator/master/ARMTemplates/custom-image-vmss.parameters.json'
+    csmFileLink: 'https://raw.githubusercontent.com/ArpanBalpande/ECIF-YAML/master/ARMTemplates/custom-image-vmss.json'
+    csmParametersFileLink: 'https://raw.githubusercontent.com/ArpanBalpande/ECIF-YAML/master/ARMTemplates/custom-image-vmss.parameters.json'
