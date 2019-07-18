@@ -100,7 +100,6 @@ steps:
   inputs:
     ConnectedServiceName: 'ArpanRM-SC'
     managedImageName: SimCalImage
-    location: eastus
     storageAccountName: simcalsa
     azureResourceGroup: ECIF
     packagePath: '$(build.artifactstagingdirectory)'
