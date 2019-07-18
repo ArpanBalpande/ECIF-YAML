@@ -101,7 +101,7 @@ steps:
     ConnectedServiceName: 'YashRM-SC'
     managedImageName: SimCalImage
     location: eastus
-    storageAccountName: simcalsa
+    storageAccountName: ecifdeeresa
     azureResourceGroup: innovationgroup-azuredevops-JD
     packagePath: '$(build.artifactstagingdirectory)'
     deployScriptPath: InstallCal.ps1
