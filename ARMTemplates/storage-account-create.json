@@ -24,7 +24,7 @@
         }
     },
     "variables": {
-        "storageAccountName": "ecifdeeresa"
+        "storageAccountName": "yashpacker"
     },
     "resources": [
         {
